@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Agrícola</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 360px;
+      margin: 100px auto;
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #166534;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: #166534;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #14532d;
+    }
+    .mensaje {
+      margin-top: 16px;
+      text-align: center;
+      font-weight: bold;
+      color: #166534;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login Sistema Agrícola</h1>
+    <input id="user" type="text" placeholder="Usuario">
+    <input id="pass" type="password" placeholder="Clave">
+    <button onclick="login()">Ingresar</button>
+    <div class="mensaje" id="mensaje"></div>
+  </div>
+
+  <script>
+    function login() {
+      const u = document.getElementById("user").value;
+      const p = document.getElementById("pass").value;
+      const mensaje = document.getElementById("mensaje");
+
+      if (
+        (u === "admin" && p === "1234") ||
+        (u === "asesor" && p === "1234") ||
+        (u === "secretaria" && p === "1234")
+      ) {
+        mensaje.textContent = "Bienvenido " + u;
+      } else {
+        mensaje.textContent = "Datos incorrectos";
+      }
+    }
+  </script>
+</body>
+</html>
