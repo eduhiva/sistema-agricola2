@@ -11,7 +11,8 @@
       margin: 0;
       padding: 0;
     }
-    .container {
+
+    .login-container {
       width: 360px;
       margin: 100px auto;
       background: white;
@@ -19,12 +20,12 @@
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.12);
     }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
+
+    h1, h2 {
       text-align: center;
       color: #166534;
     }
+
     input {
       width: 100%;
       padding: 12px;
@@ -33,6 +34,7 @@
       border-radius: 8px;
       box-sizing: border-box;
     }
+
     button {
       width: 100%;
       padding: 12px;
@@ -44,24 +46,142 @@
       cursor: pointer;
       font-size: 16px;
     }
+
     button:hover {
       background: #14532d;
     }
+
     .mensaje {
       margin-top: 16px;
       text-align: center;
       font-weight: bold;
       color: #166534;
     }
+
+    .dashboard {
+      display: none;
+    }
+
+    .header {
+      background: #166534;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+
+    .sidebar {
+      width: 240px;
+      background: #14532d;
+      color: white;
+      padding: 20px;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 10px;
+    }
+
+    .sidebar button {
+      width: 100%;
+      text-align: left;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 10px;
+    }
+
+    .sidebar button:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .content {
+      flex: 1;
+      padding: 24px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #166534;
+    }
+
+    .logout {
+      background: #991b1b !important;
+    }
+
+    .logout:hover {
+      background: #7f1d1d !important;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+
+  <div id="loginView" class="login-container">
     <h1>Login Sistema Agrícola</h1>
     <input id="user" type="text" placeholder="Usuario">
     <input id="pass" type="password" placeholder="Clave">
     <button onclick="login()">Ingresar</button>
     <div class="mensaje" id="mensaje"></div>
+  </div>
+
+  <div id="dashboardView" class="dashboard">
+    <div class="header">Sistema Agrícola Web</div>
+
+    <div class="layout">
+      <div class="sidebar">
+        <h3>Menú</h3>
+        <button onclick="mostrarSeccion('inicio')">Inicio</button>
+        <button onclick="mostrarSeccion('agricultores')">Agricultores</button>
+        <button onclick="mostrarSeccion('predios')">Predios</button>
+        <button onclick="mostrarSeccion('produccion')">Producción Lechera</button>
+        <button onclick="mostrarSeccion('informes')">Informes</button>
+        <button class="logout" onclick="cerrarSesion()">Cerrar sesión</button>
+      </div>
+
+      <div class="content" id="contenido">
+        <h2>Bienvenido al panel principal</h2>
+        <p>Aquí comenzará la marcha blanca del sistema.</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>Agricultores</h3>
+            <p>Administración de clientes, fichas y antecedentes generales.</p>
+          </div>
+          <div class="card">
+            <h3>Predios</h3>
+            <p>Registro de roles, superficie, tenencia y asignación por rubro.</p>
+          </div>
+          <div class="card">
+            <h3>Producción Lechera</h3>
+            <p>Control de litros, calidad de leche, ingresos y evolución histórica.</p>
+          </div>
+          <div class="card">
+            <h3>Informes</h3>
+            <p>Vista futura para imprimir reportes y revisar indicadores.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -75,11 +195,104 @@
         (u === "asesor" && p === "1234") ||
         (u === "secretaria" && p === "1234")
       ) {
-        mensaje.textContent = "Bienvenido " + u;
+        document.getElementById("loginView").style.display = "none";
+        document.getElementById("dashboardView").style.display = "block";
+        mostrarInicio(u);
       } else {
         mensaje.textContent = "Datos incorrectos";
       }
     }
+
+    function mostrarInicio(usuario) {
+      document.getElementById("contenido").innerHTML = `
+        <h2>Bienvenido ${usuario}</h2>
+        <p>Este es el portal inicial del sistema agrícola.</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>Agricultores</h3>
+            <p>Acceso a información general del agricultor, entrevistas y antecedentes.</p>
+          </div>
+          <div class="card">
+            <h3>Predios</h3>
+            <p>Control de predios, roles, hectáreas y rubros asociados.</p>
+          </div>
+          <div class="card">
+            <h3>Producción Lechera</h3>
+            <p>Seguimiento mensual y anual de leche, calidad e ingresos.</p>
+          </div>
+          <div class="card">
+            <h3>Informes</h3>
+            <p>Generación futura de informes impresos y visualización histórica.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function mostrarSeccion(seccion) {
+      const contenido = document.getElementById("contenido");
+
+      if (seccion === "inicio") {
+        contenido.innerHTML = `
+          <h2>Inicio</h2>
+          <p>Panel general del sistema agrícola.</p>
+        `;
+      }
+
+      if (seccion === "agricultores") {
+        contenido.innerHTML = `
+          <h2>Agricultores</h2>
+          <p>Aquí irá la ficha del agricultor, creación de nuevos registros y búsqueda.</p>
+          <div class="card">
+            <h3>Funciones futuras</h3>
+            <p>Buscar agricultor, crear agricultor y revisar su información general.</p>
+          </div>
+        `;
+      }
+
+      if (seccion === "predios") {
+        contenido.innerHTML = `
+          <h2>Predios</h2>
+          <p>Aquí se administrarán roles, superficie, documentos y asignación a rubros.</p>
+          <div class="card">
+            <h3>Funciones futuras</h3>
+            <p>Registrar predios, asociarlos al agricultor y distribuir hectáreas por rubro.</p>
+          </div>
+        `;
+      }
+
+      if (seccion === "produccion") {
+        contenido.innerHTML = `
+          <h2>Producción Lechera</h2>
+          <p>Aquí irá el control productivo mensual y anual del sistema lechero.</p>
+          <div class="card">
+            <h3>Indicadores futuros</h3>
+            <p>Litros totales, litros por hectárea, litros por vaca masa, RCS, UFC, grasa, proteína, precio e ingresos.</p>
+          </div>
+        `;
+      }
+
+      if (seccion === "informes") {
+        contenido.innerHTML = `
+          <h2>Informes</h2>
+          <p>Aquí se mostrarán los informes listos para revisar e imprimir.</p>
+          <div class="card">
+            <h3>Salida futura</h3>
+            <p>Informes en hojas tipo carta, gráficos y recomendaciones finales.</p>
+          </div>
+        `;
+      }
+    }
+
+    function cerrarSesion() {
+      document.getElementById("dashboardView").style.display = "none";
+      document.getElementById("loginView").style.display = "block";
+      document.getElementById("user").value = "";
+      document.getElementById("pass").value = "";
+      document.getElementById("mensaje").textContent = "";
+    }
   </script>
+
 </body>
+</html>
 </html>
