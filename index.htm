@@ -441,7 +441,47 @@
       }
     }
 
-    function guardarAgricultorDemo() {
+    let agricultores = [];
+
+function guardarAgricultorDemo() {
+  const inputs = document.querySelectorAll("#formAgricultor input");
+
+  const nuevo = {
+    nombre: inputs[0].value,
+    rut: inputs[1].value,
+    telefono: inputs[2].value,
+    correo: inputs[3].value,
+    comuna: inputs[4].value,
+    localidad: inputs[5].value,
+    obs: inputs[6].value
+  };
+
+  if (!nuevo.nombre || !nuevo.rut) {
+    document.getElementById("mensajeAgricultor").textContent = "Falta nombre o RUT";
+    return;
+  }
+
+  agricultores.push(nuevo);
+
+  document.getElementById("mensajeAgricultor").textContent = "Agricultor guardado";
+
+  actualizarTablaAgricultores();
+}function actualizarTablaAgricultores() {
+  let filas = "";
+
+  agricultores.forEach(a => {
+    filas += `
+      <tr>
+        <td>${a.nombre}</td>
+        <td>${a.rut}</td>
+        <td>${a.comuna}</td>
+        <td>Activo</td>
+      </tr>
+    `;
+  });
+
+  document.querySelector("#tablaAgricultores").innerHTML = filas;
+}
       const mensaje = document.getElementById("mensajeAgricultor");
       if (mensaje) {
         mensaje.textContent = "Agricultor guardado correctamente en esta versión de prueba.";
