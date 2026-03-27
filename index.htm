@@ -229,61 +229,214 @@
       `;
     }
 
-    function mostrarSeccion(seccion) {
-      const contenido = document.getElementById("contenido");
+     <script>
+  function login() {
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
+    const mensaje = document.getElementById("mensaje");
 
-      if (seccion === "inicio") {
-        contenido.innerHTML = `
-          <h2>Inicio</h2>
-          <p>Panel general del sistema agrícola.</p>
-        `;
-      }
+    if (
+      (u === "admin" && p === "1234") ||
+      (u === "asesor" && p === "1234") ||
+      (u === "secretaria" && p === "1234")
+    ) {
+      document.getElementById("loginView").style.display = "none";
+      document.getElementById("dashboardView").style.display = "block";
+      mostrarInicio(u);
+    } else {
+      mensaje.textContent = "Datos incorrectos";
+    }
+  }
 
-      if (seccion === "agricultores") {
-        contenido.innerHTML = `
-          <h2>Agricultores</h2>
-          <p>Aquí irá la ficha del agricultor, creación de nuevos registros y búsqueda.</p>
+  function mostrarInicio(usuario) {
+    document.getElementById("contenido").innerHTML = `
+      <h2>Bienvenido ${usuario}</h2>
+      <p>Este es el portal inicial del sistema agrícola.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Agricultores</h3>
+          <p>Acceso a información general del agricultor, entrevistas y antecedentes.</p>
+        </div>
+        <div class="card">
+          <h3>Predios</h3>
+          <p>Control de predios, roles, hectáreas y rubros asociados.</p>
+        </div>
+        <div class="card">
+          <h3>Producción Lechera</h3>
+          <p>Seguimiento mensual y anual de leche, calidad e ingresos.</p>
+        </div>
+        <div class="card">
+          <h3>Informes</h3>
+          <p>Generación futura de informes impresos y visualización histórica.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function mostrarSeccion(seccion) {
+    const contenido = document.getElementById("contenido");
+
+    if (seccion === "inicio") {
+      contenido.innerHTML = `
+        <h2>Inicio</h2>
+        <p>Panel general del sistema agrícola.</p>
+        <div class="card-grid">
           <div class="card">
-            <h3>Funciones futuras</h3>
-            <p>Buscar agricultor, crear agricultor y revisar su información general.</p>
+            <h3>Marcha blanca</h3>
+            <p>Esta versión permitirá revisar navegación, pantallas y estructura general del sistema.</p>
           </div>
-        `;
-      }
-
-      if (seccion === "predios") {
-        contenido.innerHTML = `
-          <h2>Predios</h2>
-          <p>Aquí se administrarán roles, superficie, documentos y asignación a rubros.</p>
           <div class="card">
-            <h3>Funciones futuras</h3>
-            <p>Registrar predios, asociarlos al agricultor y distribuir hectáreas por rubro.</p>
+            <h3>Próximo objetivo</h3>
+            <p>Ingresar agricultores, luego predios, y después avanzar a producción e informes.</p>
           </div>
-        `;
-      }
-
-      if (seccion === "produccion") {
-        contenido.innerHTML = `
-          <h2>Producción Lechera</h2>
-          <p>Aquí irá el control productivo mensual y anual del sistema lechero.</p>
-          <div class="card">
-            <h3>Indicadores futuros</h3>
-            <p>Litros totales, litros por hectárea, litros por vaca masa, RCS, UFC, grasa, proteína, precio e ingresos.</p>
-          </div>
-        `;
-      }
-
-      if (seccion === "informes") {
-        contenido.innerHTML = `
-          <h2>Informes</h2>
-          <p>Aquí se mostrarán los informes listos para revisar e imprimir.</p>
-          <div class="card">
-            <h3>Salida futura</h3>
-            <p>Informes en hojas tipo carta, gráficos y recomendaciones finales.</p>
-          </div>
-        `;
-      }
+        </div>
+      `;
     }
 
+    if (seccion === "agricultores") {
+      contenido.innerHTML = `
+        <h2>Agricultores</h2>
+        <p>Panel de administración y búsqueda de agricultores.</p>
+
+        <div style="display:grid; grid-template-columns: 1fr auto; gap:16px; margin:20px 0; align-items:end;">
+          <div>
+            <label><strong>Buscar agricultor</strong></label>
+            <input type="text" placeholder="Escriba nombre, RUT o comuna">
+          </div>
+          <div>
+            <button onclick="mostrarFormularioAgricultor()">Crear agricultor</button>
+          </div>
+        </div>
+
+        <div id="formAgricultor" style="display:none; margin-top:20px;">
+          <div class="card">
+            <h3>Nuevo agricultor</h3>
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px;">
+              <div>
+                <label>Nombre completo</label>
+                <input type="text" placeholder="Nombre del agricultor">
+              </div>
+              <div>
+                <label>RUT</label>
+                <input type="text" placeholder="RUT">
+              </div>
+              <div>
+                <label>Teléfono</label>
+                <input type="text" placeholder="Teléfono">
+              </div>
+              <div>
+                <label>Correo</label>
+                <input type="text" placeholder="Correo electrónico">
+              </div>
+              <div>
+                <label>Comuna</label>
+                <input type="text" placeholder="Comuna">
+              </div>
+              <div>
+                <label>Localidad</label>
+                <input type="text" placeholder="Localidad o sector">
+              </div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <label>Observaciones iniciales</label>
+              <input type="text" placeholder="Antecedentes generales entregados en entrevista">
+            </div>
+
+            <div style="margin-top:18px; display:flex; gap:10px;">
+              <button onclick="guardarAgricultorDemo()">Guardar agricultor</button>
+              <button onclick="ocultarFormularioAgricultor()" style="background:#6b7280;">Cancelar</button>
+            </div>
+
+            <div id="mensajeAgricultor" class="mensaje"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px;">
+          <h3>Listado inicial</h3>
+          <table style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr style="background:#f3f4f6;">
+                <th style="text-align:left; padding:10px; border-bottom:1px solid #ddd;">Nombre</th>
+                <th style="text-align:left; padding:10px; border-bottom:1px solid #ddd;">RUT</th>
+                <th style="text-align:left; padding:10px; border-bottom:1px solid #ddd;">Comuna</th>
+                <th style="text-align:left; padding:10px; border-bottom:1px solid #ddd;">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:10px; border-bottom:1px solid #eee;">Juan Pérez Soto</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">12.345.678-9</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">Puerto Varas</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">Activo</td>
+              </tr>
+              <tr>
+                <td style="padding:10px; border-bottom:1px solid #eee;">María González Ruiz</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">9.876.543-2</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">Llanquihue</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">Activo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    if (seccion === "predios") {
+      contenido.innerHTML = `
+        <h2>Predios</h2>
+        <p>Aquí se administrarán roles, superficie, documentos y asignación a rubros.</p>
+        <div class="card">
+          <h3>Funciones futuras</h3>
+          <p>Registrar predios, asociarlos al agricultor y distribuir hectáreas por rubro.</p>
+        </div>
+      `;
+    }
+
+    if (seccion === "produccion") {
+      contenido.innerHTML = `
+        <h2>Producción Lechera</h2>
+        <p>Aquí irá el control productivo mensual y anual del sistema lechero.</p>
+        <div class="card">
+          <h3>Indicadores futuros</h3>
+          <p>Litros totales, litros por hectárea, litros por vaca masa, RCS, UFC, grasa, proteína, precio e ingresos.</p>
+        </div>
+      `;
+    }
+
+    if (seccion === "informes") {
+      contenido.innerHTML = `
+        <h2>Informes</h2>
+        <p>Aquí se mostrarán los informes listos para revisar e imprimir.</p>
+        <div class="card">
+          <h3>Salida futura</h3>
+          <p>Informes en hojas tipo carta, gráficos y recomendaciones finales.</p>
+        </div>
+      `;
+    }
+  }
+
+  function mostrarFormularioAgricultor() {
+    document.getElementById("formAgricultor").style.display = "block";
+  }
+
+  function ocultarFormularioAgricultor() {
+    document.getElementById("formAgricultor").style.display = "none";
+  }
+
+  function guardarAgricultorDemo() {
+    document.getElementById("mensajeAgricultor").textContent = "Agricultor guardado correctamente en esta versión de prueba.";
+  }
+
+  function cerrarSesion() {
+    document.getElementById("dashboardView").style.display = "none";
+    document.getElementById("loginView").style.display = "block";
+    document.getElementById("user").value = "";
+    document.getElementById("pass").value = "";
+    document.getElementById("mensaje").textContent = "";
+  }
+</script>
     function cerrarSesion() {
       document.getElementById("dashboardView").style.display = "none";
       document.getElementById("loginView").style.display = "block";
