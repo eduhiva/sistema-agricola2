@@ -199,12 +199,13 @@
         <button class="logout" onclick="cerrarSesion()">Cerrar sesión</button>
       </div>
 
-      <div class="content" id="contenido">
-      </div>
+      <div class="content" id="contenido"></div>
     </div>
   </div>
 
   <script>
+    let agricultores = [];
+
     function login() {
       const u = document.getElementById("user").value;
       const p = document.getElementById("pass").value;
@@ -429,355 +430,66 @@
 
     function mostrarFormularioAgricultor() {
       const form = document.getElementById("formAgricultor");
-      if (form) {
-        form.classList.remove("hidden");
-      }
+      if (form) form.classList.remove("hidden");
     }
 
     function ocultarFormularioAgricultor() {
       const form = document.getElementById("formAgricultor");
-      if (form) {
-        form.classList.add("hidden");
+      if (form) form.classList.add("hidden");
+    }
+
+    function guardarAgricultorDemo() {
+      const inputs = document.querySelectorAll("#formAgricultor input");
+
+      const nuevo = {
+        nombre: inputs[0].value,
+        rut: inputs[1].value,
+        telefono: inputs[2].value,
+        correo: inputs[3].value,
+        comuna: inputs[4].value,
+        localidad: inputs[5].value,
+        obs: inputs[6].value
+      };
+
+      if (!nuevo.nombre || !nuevo.rut) {
+        document.getElementById("mensajeAgricultor").textContent = "Falta nombre o RUT";
+        return;
       }
+
+      agricultores.push(nuevo);
+      document.getElementById("mensajeAgricultor").textContent = "Agricultor guardado correctamente.";
+      actualizarTablaAgricultores();
     }
 
-    let agricultores = [];
-
-function guardarAgricultorDemo() {
-  const inputs = document.querySelectorAll("#formAgricultor input");
-
-  const nuevo = {
-    nombre: inputs[0].value,
-    rut: inputs[1].value,
-    telefono: inputs[2].value,
-    correo: inputs[3].value,
-    comuna: inputs[4].value,
-    localidad: inputs[5].value,
-    obs: inputs[6].value
-  };
-
-  if (!nuevo.nombre || !nuevo.rut) {
-    document.getElementById("mensajeAgricultor").textContent = "Falta nombre o RUT";
-    return;
-  }
-
-  agricultores.push(nuevo);
-
-  document.getElementById("mensajeAgricultor").textContent = "Agricultor guardado";
-
-  actualizarTablaAgricultores();
-}function actualizarTablaAgricultores() {
-  let filas = "";
-
-  agricultores.forEach(a => {
-    filas += `
-      <tr>
-        <td>${a.nombre}</td>
-        <td>${a.rut}</td>
-        <td>${a.comuna}</td>
-        <td>Activo</td>
-      </tr>
-    `;
-  });
-
-  document.querySelector("#tablaAgricultores").innerHTML = filas;
-}
-      <script>
-  function login() {
-    const u = document.getElementById("user").value;
-    const p = document.getElementById("pass").value;
-    const mensaje = document.getElementById("mensaje");
-
-    if (
-      (u === "admin" && p === "1234") ||
-      (u === "asesor" && p === "1234") ||
-      (u === "secretaria" && p === "1234")
-    ) {
-      document.getElementById("loginView").style.display = "none";
-      document.getElementById("dashboardView").style.display = "block";
-      mensaje.textContent = "";
-      mostrarInicio(u);
-    } else {
-      mensaje.textContent = "Datos incorrectos";
-    }
-  }
-
-  function mostrarInicio(usuario) {
-    document.getElementById("contenido").innerHTML = `
-      <h2>Bienvenido ${usuario}</h2>
-      <p>Este es el portal inicial del sistema agrícola.</p>
-
-      <div class="card-grid">
-        <div class="card">
-          <h3>Agricultores</h3>
-          <p>Acceso a información general del agricultor, entrevistas y antecedentes.</p>
-        </div>
-        <div class="card">
-          <h3>Predios</h3>
-          <p>Control de predios, roles, hectáreas y rubros asociados.</p>
-        </div>
-        <div class="card">
-          <h3>Producción Lechera</h3>
-          <p>Seguimiento mensual y anual de leche, calidad e ingresos.</p>
-        </div>
-        <div class="card">
-          <h3>Informes</h3>
-          <p>Generación futura de informes impresos y visualización histórica.</p>
-        </div>
-      </div>
-    `;
-  }
-
-  function mostrarSeccion(seccion) {
-    const contenido = document.getElementById("contenido");
-
-    if (seccion === "inicio") {
-      contenido.innerHTML = `
-        <h2>Inicio</h2>
-        <p>Panel general del sistema agrícola.</p>
-        <div class="card-grid">
-          <div class="card">
-            <h3>Marcha blanca</h3>
-            <p>Esta versión permitirá revisar navegación, pantallas y estructura general del sistema.</p>
-          </div>
-          <div class="card">
-            <h3>Próximo objetivo</h3>
-            <p>Ingresar agricultores, luego predios, y después avanzar a producción e informes.</p>
-          </div>
-        </div>
-      `;
-    }
-
-    if (seccion === "agricultores") {
-      contenido.innerHTML = `
-        <h2>Agricultores</h2>
-        <p>Panel de administración y búsqueda de agricultores.</p>
-
-        <div class="top-actions">
-          <div>
-            <label>Buscar agricultor</label>
-            <input type="text" placeholder="Escriba nombre, RUT o comuna">
-          </div>
-          <div>
-            <button onclick="mostrarFormularioAgricultor()">Crear agricultor</button>
-          </div>
-        </div>
-
-        <div id="formAgricultor" class="hidden">
-          <div class="card">
-            <h3>Nuevo agricultor</h3>
-
-            <div class="form-grid">
-              <div>
-                <label>Nombre completo</label>
-                <input type="text" placeholder="Nombre del agricultor">
-              </div>
-              <div>
-                <label>RUT</label>
-                <input type="text" placeholder="RUT">
-              </div>
-              <div>
-                <label>Teléfono</label>
-                <input type="text" placeholder="Teléfono">
-              </div>
-              <div>
-                <label>Correo</label>
-                <input type="text" placeholder="Correo electrónico">
-              </div>
-              <div>
-                <label>Comuna</label>
-                <input type="text" placeholder="Comuna">
-              </div>
-              <div>
-                <label>Localidad</label>
-                <input type="text" placeholder="Localidad o sector">
-              </div>
-            </div>
-
-            <div style="margin-top:14px;">
-              <label>Observaciones iniciales</label>
-              <input type="text" placeholder="Antecedentes generales entregados en entrevista">
-            </div>
-
-            <div style="margin-top:18px; display:flex; gap:10px;">
-              <button onclick="guardarAgricultorDemo()">Guardar agricultor</button>
-              <button onclick="ocultarFormularioAgricultor()" style="background:#6b7280;">Cancelar</button>
-            </div>
-
-            <div id="mensajeAgricultor" class="mensaje"></div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:20px;">
-          <h3>Listado inicial</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>RUT</th>
-                <th>Comuna</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody id="tablaAgricultores">
-              <tr>
-                <td>Juan Pérez Soto</td>
-                <td>12.345.678-9</td>
-                <td>Puerto Varas</td>
-                <td>Activo</td>
-              </tr>
-              <tr>
-                <td>María González Ruiz</td>
-                <td>9.876.543-2</td>
-                <td>Llanquihue</td>
-                <td>Activo</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    if (seccion === "predios") {
-      contenido.innerHTML = `
-        <h2>Predios</h2>
-        <p>Aquí se administrarán roles, superficie, documentos y asignación a rubros.</p>
-
-        <div class="card-grid">
-          <div class="card">
-            <h3>Rol del predio</h3>
-            <p>Cada predio podrá identificarse por su número de rol.</p>
-          </div>
-          <div class="card">
-            <h3>Superficie</h3>
-            <p>Registro de hectáreas totales y hectáreas asignadas a cada rubro.</p>
-          </div>
-          <div class="card">
-            <h3>Documentos</h3>
-            <p>Espacio futuro para guardar tenencia, avalúos fiscales y respaldo digital.</p>
-          </div>
-        </div>
-      `;
-    }
-
-    if (seccion === "produccion") {
-      contenido.innerHTML = `
-        <h2>Producción Lechera</h2>
-        <p>Aquí irá el control productivo mensual y anual del sistema lechero.</p>
-
-        <div class="card-grid">
-          <div class="card">
-            <h3>Indicadores</h3>
-            <p>Litros totales, litros por hectárea y litros por vaca masa.</p>
-          </div>
-          <div class="card">
-            <h3>Calidad de leche</h3>
-            <p>RCS, UFC, grasa, proteína, precio e ingresos mensuales.</p>
-          </div>
-          <div class="card">
-            <h3>Historial</h3>
-            <p>Visualización por año y por mes, con años arriba y meses al lado izquierdo.</p>
-          </div>
-        </div>
-      `;
-    }
-
-    if (seccion === "informes") {
-      contenido.innerHTML = `
-        <h2>Informes</h2>
-        <p>Aquí se mostrarán los informes listos para revisar e imprimir.</p>
-
-        <div class="card-grid">
-          <div class="card">
-            <h3>Formato</h3>
-            <p>Salida en hoja tamaño carta, a color, con tablas y gráficos.</p>
-          </div>
-          <div class="card">
-            <h3>Portada</h3>
-            <p>Primera hoja con logo, nombre del agricultor e indicadores principales.</p>
-          </div>
-          <div class="card">
-            <h3>Recomendaciones</h3>
-            <p>Última hoja con conclusiones y sugerencias técnicas.</p>
-          </div>
-        </div>
-      `;
-    }
-  }
-
-  function mostrarFormularioAgricultor() {
-    const form = document.getElementById("formAgricultor");
-    if (form) form.classList.remove("hidden");
-  }
-
-  function ocultarFormularioAgricultor() {
-    const form = document.getElementById("formAgricultor");
-    if (form) form.classList.add("hidden");
-  }
-
-  let agricultores = [];
-
-  function guardarAgricultorDemo() {
-    const inputs = document.querySelectorAll("#formAgricultor input");
-
-    const nuevo = {
-      nombre: inputs[0].value,
-      rut: inputs[1].value,
-      telefono: inputs[2].value,
-      correo: inputs[3].value,
-      comuna: inputs[4].value,
-      localidad: inputs[5].value,
-      obs: inputs[6].value
-    };
-
-    if (!nuevo.nombre || !nuevo.rut) {
-      document.getElementById("mensajeAgricultor").textContent = "Falta nombre o RUT";
-      return;
-    }
-
-    agricultores.push(nuevo);
-    document.getElementById("mensajeAgricultor").textContent = "Agricultor guardado correctamente.";
-    actualizarTablaAgricultores();
-  }
-
-  function actualizarTablaAgricultores() {
-    let filas = `
-      <tr>
-        <td>Juan Pérez Soto</td>
-        <td>12.345.678-9</td>
-        <td>Puerto Varas</td>
-        <td>Activo</td>
-      </tr>
-      <tr>
-        <td>María González Ruiz</td>
-        <td>9.876.543-2</td>
-        <td>Llanquihue</td>
-        <td>Activo</td>
-      </tr>
-    `;
-
-    agricultores.forEach(a => {
-      filas += `
+    function actualizarTablaAgricultores() {
+      let filas = `
         <tr>
-          <td>${a.nombre}</td>
-          <td>${a.rut}</td>
-          <td>${a.comuna}</td>
+          <td>Juan Pérez Soto</td>
+          <td>12.345.678-9</td>
+          <td>Puerto Varas</td>
+          <td>Activo</td>
+        </tr>
+        <tr>
+          <td>María González Ruiz</td>
+          <td>9.876.543-2</td>
+          <td>Llanquihue</td>
           <td>Activo</td>
         </tr>
       `;
-    });
 
-    document.querySelector("#tablaAgricultores").innerHTML = filas;
-  }
+      agricultores.forEach(a => {
+        filas += `
+          <tr>
+            <td>${a.nombre}</td>
+            <td>${a.rut}</td>
+            <td>${a.comuna}</td>
+            <td>Activo</td>
+          </tr>
+        `;
+      });
 
-  function cerrarSesion() {
-    document.getElementById("dashboardView").style.display = "none";
-    document.getElementById("loginView").style.display = "block";
-    document.getElementById("user").value = "";
-    document.getElementById("pass").value = "";
-    document.getElementById("mensaje").textContent = "";
-  }
-</script>
+      document.getElementById("tablaAgricultores").innerHTML = filas;
+    }
 
     function cerrarSesion() {
       document.getElementById("dashboardView").style.display = "none";
